@@ -1,0 +1,6 @@
+a,home,stay,y,n
+a,home,stay,n,y
+a,home,leave,n,n
+b,home,leave,n,y
+b,guest,leave,y,y
+a,guest,stay,y,n
