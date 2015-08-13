@@ -1,4 +1,4 @@
-#!/usr/bin/lua
+#!/usr/bin/env lua
 
 package.path = "src/?.lua;src/?/init.lua;t/?.lua;" .. package.path
 
@@ -43,25 +43,25 @@ subtest(
    end
 )
 
--- subtest(
---    "footbal samples",
---    function()
---       local id3_instance = id3.new()
---       local dataset = ml_test.get_datafile('t/data/footbal.data', 1.0)
---       print(inspect(dataset))
---       local class = dataset.attributes_count
---       id3_instance:train(dataset.training.all, class)
+subtest(
+   "footbal samples",
+   function()
+      local id3_instance = id3.new()
+      local dataset = ml_test.get_datafile('t/data/footbal.data', 1.0)
+      print(inspect(dataset))
+      local class = dataset.attributes_count
+      id3_instance:train(dataset.training.all, class)
 
---       local first = dataset.training.all[1]
---       is(id3_instance:classify(first),
---          first[class],
---          "existing value is classified right"
---       )
---       is(id3_instance:classify({'b', 'guest', 'stay', 'y' }),
---          'n',
---          "unseen example is classified right"
---       )
---    end
--- )
+      local first = dataset.training.all[1]
+      is(id3_instance:classify(first),
+         first[class],
+         "existing value is classified right"
+      )
+      is(id3_instance:classify({'b', 'guest', 'stay', 'y' }),
+         'loose',
+         "unseen example is classified right"
+      )
+   end
+)
 
-done_testing(1)
+done_testing(2)

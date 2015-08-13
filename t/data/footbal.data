@@ -1,6 +1,7 @@
-a,home,stay,y,n
-a,home,stay,n,y
-a,home,leave,n,n
-b,home,leave,n,y
-b,guest,leave,y,y
-a,guest,stay,y,n
+a,home,stay,y,loose
+a,home,stay,n,win
+a,home,leave,n,win
+b,home,leave,n,win
+b,guest,leave,y,win
+b,home,leave,y,win
+a,guest,stay,y,loose

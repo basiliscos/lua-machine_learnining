@@ -57,20 +57,19 @@ function id3:train(all_samples, attributes_count)
          misc_attributes,
          function(attribute_idx, attribute)
             local uniq_values = get_uniq_values(samples, attribute)
-            local attibute_entropy = _.reduce(
+            local attribute_entropy = _.reduce(
                _.keys(uniq_values),
                function(state, value)
                   local value_samples = _.select(samples, function(k, v) return v[attribute] == value end)
                   local value_entropy = entropy(value_samples, attribute);
                   local shifted_entropy = value_entropy * #value_samples / #samples
-                  -- local split_info = 
                   -- print("att." .. attribute .. "/" .. value .. " entropy: " .. shifted_entropy)
                   return state + shifted_entropy
                end,
                0
             )
-            -- print("att." .. attribute .. " entropy: " .. attibute_entropy)
-            return attibute_entropy
+            print("att." .. attribute .. " entropy: " .. attribute_entropy)
+            return attribute_entropy
          end
       )
       -- print("attributes entropy: " .. inspect(attributes_entropy))
@@ -86,7 +85,7 @@ function id3:train(all_samples, attributes_count)
       end
 
       local best_attr = misc_attributes[max_idx]
-      -- print("best att." .. best_attr .. ", idx: " .. max_idx)
+      print("best att." .. best_attr .. ", idx: " .. max_idx)
       return max_idx, best_attr
    end
 
@@ -141,6 +140,14 @@ function id3:train(all_samples, attributes_count)
             table.insert(branches, { value = value, node = sub_node})
          end
          --print(inspect(branches))
+         if (#branches < 2) then
+            print("brranches: " .. #branches .. ", condition: " .. (( #branches >= 2) and 't' or 'f'))
+            print("branches: " .. inspect(branches))
+            print("samples: " .. inspect(samples))
+            print("divisor = " .. divisor .. ", values = " .. inspect(divisor_values))
+            assert( 2 >= 2)
+            assert(#branches >= 2)
+         end
          assert(#branches >= 2)
          root_node = {
             type = 'branch',
@@ -157,7 +164,7 @@ function id3:train(all_samples, attributes_count)
    local tree = build_root(all_samples, misc_attributes)
    self.root = tree
    self.target_class = target_class
-   print(inspect(tree))
+   -- print(inspect(tree))
 end
 
 function id3:classify(item)
@@ -177,7 +184,7 @@ function id3:classify(item)
                return visit(branch.node)
             end
          end
-         error("unknown case")
+         error("unknown case: " .. divisor_value)
       end
    end
    return visit(self.root)
